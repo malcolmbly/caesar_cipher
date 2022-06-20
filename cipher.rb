@@ -6,14 +6,24 @@ def caesar_cipher(string, shift)
     # 'a'.ord - 97
     # 'z'.ord - 122
     # ' '.ord - 32
-
+    shift = shift % 26
     stringAsNumberArray = string2num(string)
-    p stringAsNumberArray
+    shiftedStringAsNumberArray = shiftString(stringAsNumberArray, shift)
 end
 
 def string2num(string)
 
     string.split("").map{ |char| char.ord}
+end
+
+def shiftString(numbers, shift)
+    numbers.each {|number|
+        number += shift
+        if number > 90 && number < 97
+            number = 65 + (number - 90)
+        elsif number > 122
+            number = 97
+    }
 end
 
 caesar_cipher("test", 2)
