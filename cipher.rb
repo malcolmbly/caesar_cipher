@@ -7,6 +7,7 @@ def caesar_cipher(string, shift)
     # 'z'.ord - 122
     # ' '.ord - 32
     shift = shift % 26
+    #make shift between 0 and 25, since that's the size of the alphabet
     stringAsNumberArray = string2num(string)
     shiftedStringAsNumberArray = shiftString(stringAsNumberArray, shift)
 end
@@ -17,12 +18,30 @@ def string2num(string)
 end
 
 def shiftString(numbers, shift)
-    numbers.each {|number|
+    
+    numbers.map {|number|
+
+        letterCase = nil
+        if number >= 65 && number <= 90
+            letterCase = "upper"
+        elsif number >= 97 && number <= 122
+            letterCase = "lower"
+        else
+            #no point in shifting punctuation
+            return
+        end
+            
+        if letterCase === "lower"
+            number -= 97
+        elsif letterCase === "upper"
+            number -= 65
+        end
+            #subtracting by the proper case, we can normalize the letters to be between 0 and 26
+
         number += shift
-        if number > 90 && number < 97
-            number = 65 + (number - 90)
-        elsif number > 122
-            number = 97
+        #check range that number is starting in, normalize it to 0-26,
+        # then shift it into that range again.
+        # ranges are a-z, A-Z, or misc. characters
     }
 end
 
