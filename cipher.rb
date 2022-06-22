@@ -9,7 +9,10 @@ def caesar_cipher(string, shift)
     shift = shift % 26
     #make shift between 0 and 25, since that's the size of the alphabet
     stringAsNumberArray = string2num(string)
-    shiftedStringAsNumberArray = shiftString(stringAsNumberArray, shift)
+    shiftedStringAsNumberArray = shiftNumbers(stringAsNumberArray, shift)
+    shiftedString = numArray2String(shiftedStringAsNumberArray)
+    p shiftedString
+    return shiftedString
 end
 
 def string2num(string)
@@ -17,32 +20,41 @@ def string2num(string)
     string.split("").map{ |char| char.ord}
 end
 
-def shiftString(numbers, shift)
+def numArray2String(numbers)
+
+    numbers.reduce(""){ |str, number| str + number.chr}
+end
+
+def shiftNumbers(numbers, shift)
     
     numbers.map {|number|
 
-        letterCase = nil
+        offset = 0
         if number >= 65 && number <= 90
-            letterCase = "upper"
+            offset = 65
         elsif number >= 97 && number <= 122
-            letterCase = "lower"
+            offset = 97
         else
             #no point in shifting punctuation
             return
         end
-            
-        if letterCase === "lower"
-            number -= 97
-        elsif letterCase === "upper"
-            number -= 65
-        end
-            #subtracting by the proper case, we can normalize the letters to be between 0 and 26
 
+        number -= offset
+        #subtracting by the proper case, we can normalize the letters to be between 0 and 25
         number += shift
+
+        if number > 25
+            number -= 26
+        elsif number < 0
+            number += 26
+        end
+
+        number += offset
+
         #check range that number is starting in, normalize it to 0-26,
         # then shift it into that range again.
         # ranges are a-z, A-Z, or misc. characters
     }
 end
 
-caesar_cipher("test", 2)
+caesar_cipher("abcd", -5)
